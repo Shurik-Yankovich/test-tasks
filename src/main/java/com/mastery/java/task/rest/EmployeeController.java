@@ -1,4 +1,5 @@
 package com.mastery.java.task.rest;
+
 import com.mastery.java.task.dto.Employee;
 import com.mastery.java.task.service.IEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,24 +15,32 @@ public class EmployeeController {
 
     @PostMapping(value = "/employee")
     public ResponseEntity<?> create(@RequestBody Employee employee) {
-        return new ResponseEntity<>(employeeService.create(employee), HttpStatus.OK);
+        employee = employeeService.create(employee);
+        return employee != null ?
+                new ResponseEntity<>(employee, HttpStatus.OK) :
+                new ResponseEntity<>("Incorrect data entered", HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping(value = "/employee/{id}")
     public ResponseEntity<?> read(@PathVariable(name = "id") Long pk) {
-        return new ResponseEntity<>(employeeService.read(pk), HttpStatus.OK);
+        Employee employee = employeeService.read(pk);
+        return employee != null ?
+                new ResponseEntity<>(employee, HttpStatus.OK) :
+                new ResponseEntity<>("This employee ID does not exist", HttpStatus.BAD_GATEWAY);
     }
 
     @PutMapping(value = "/employee")
     public ResponseEntity<?> update(@RequestBody Employee employee) {
-        return new ResponseEntity<>(employeeService.update(employee), HttpStatus.OK);
+        return employeeService.update(employee) ?
+                new ResponseEntity<>("Updating of the employee was successful", HttpStatus.OK) :
+                new ResponseEntity<>("This employee does not exist", HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/employee/{id}")
     public ResponseEntity<?> delete(@PathVariable(name = "id") Long pk) {
         return employeeService.delete(pk) ?
                 new ResponseEntity<>("Removal of the employee was successful", HttpStatus.OK) :
-                new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
+                new ResponseEntity<>("This employee ID does not exist", HttpStatus.BAD_GATEWAY);
     }
 
     @GetMapping(value = "/employee")

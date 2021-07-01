@@ -10,19 +10,23 @@ import java.util.Collection;
 @Service
 public class EmployeeService implements IEmployeeService {
 
-    @Autowired
     private IEmployeeDao employeeDao;
+
+    @Autowired
+    public EmployeeService(IEmployeeDao employeeDao) {
+        this.employeeDao = employeeDao;
+    }
 
     public Employee create(Employee employee) {
         Long employeeId = employeeDao.create(employee);
-        return employeeDao.read(employeeId);
+        return employeeId != 0 ? employeeDao.read(employeeId) : null;
     }
 
     public Employee read(Long pk) {
         return employeeDao.read(pk);
     }
 
-    public Employee update(Employee employee) {
+    public boolean update(Employee employee) {
         return employeeDao.update(employee);
     }
 
