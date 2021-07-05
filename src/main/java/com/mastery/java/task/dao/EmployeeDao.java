@@ -4,7 +4,7 @@ import com.mastery.java.task.utils.EmployeeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import com.mastery.java.task.dto.Employee;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,11 +14,13 @@ import java.util.Collection;
 
 @Repository
 @Transactional
-public class EmployeeDao extends JdbcDaoSupport implements IEmployeeDao {
+public class EmployeeDao implements IEmployeeDao {
+
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     public EmployeeDao(DataSource dataSource) {
-        this.setDataSource(dataSource);
+        jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     public Long create(Employee employee) {
@@ -27,7 +29,7 @@ public class EmployeeDao extends JdbcDaoSupport implements IEmployeeDao {
 
         Long employee_id;
         try {
-            employee_id = this.getJdbcTemplate().queryForObject(query,
+            employee_id = jdbcTemplate.queryForObject(query,
                     new Object[]{employee.getFirstName(),
                             employee.getLastName(), employee.getDepartmentId(), employee.getJobTitle(),
                             employee.getGender().name(), employee.getDateOfBirth()},
@@ -43,7 +45,7 @@ public class EmployeeDao extends JdbcDaoSupport implements IEmployeeDao {
 
         Employee employee;
         try {
-            employee = this.getJdbcTemplate().queryForObject(
+            employee = jdbcTemplate.queryForObject(
                     query, new Object[]{pk}, new EmployeeMapper());
         } catch (EmptyResultDataAccessException e) {
             employee = null;
@@ -57,7 +59,7 @@ public class EmployeeDao extends JdbcDaoSupport implements IEmployeeDao {
 
         int answer;
         try {
-        answer = this.getJdbcTemplate().update(query, employee.getFirstName(),
+        answer = jdbcTemplate.update(query, employee.getFirstName(),
                 employee.getLastName(), employee.getDepartmentId(), employee.getJobTitle(),
                 employee.getGender().name(), employee.getDateOfBirth(), employee.getEmployeeId());
         } catch (DataAccessException e) {
@@ -69,13 +71,12 @@ public class EmployeeDao extends JdbcDaoSupport implements IEmployeeDao {
     public boolean delete(Long pk) {
         String query = "DELETE FROM employee WHERE employee_id = ?";
 
-        return this.getJdbcTemplate().update(query, pk) == 1;
+        return jdbcTemplate.update(query, pk) == 1;
     }
 
     public Collection<Employee> readAll() {
         String query = "SELECT * FROM employee";
 
-        Collection<Employee> employees = this.getJdbcTemplate().query(query, new EmployeeMapper());
-        return employees;
+        return jdbcTemplate.query(query, new EmployeeMapper());
     }
 }
