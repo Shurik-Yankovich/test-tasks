@@ -1,24 +1,16 @@
 package com.mastery.java.task.dto;
 
-import com.sun.istack.internal.NotNull;
-
 import java.time.LocalDate;
 import java.util.Objects;
 
 public class Employee {
 
     private long employeeId;
-    @NotNull
     private String firstName;
-    @NotNull
     private String lastName;
-    @NotNull
     private long departmentId;
-    @NotNull
     private String jobTitle;
-    @NotNull
     private Gender gender;
-    @NotNull
     private LocalDate dateOfBirth;
 
     public Employee() {

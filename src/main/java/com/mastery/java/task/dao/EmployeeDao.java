@@ -16,6 +16,14 @@ import java.util.Collection;
 @Transactional
 public class EmployeeDao implements IEmployeeDao {
 
+    private static final String CREATE_QUERY = "INSERT INTO employee (employee_id, first_name, last_name, department_id, job_title, gender, date_of_birth)" +
+            " VALUES (DEFAULT, ?, ?, ?, ?, ?, ?) RETURNING employee_id";
+    private static final String READ_QUERY = "SELECT * FROM employee WHERE employee_id = ?";
+    private static final String UPDATE_QUERY = "UPDATE employee SET first_name = ?, last_name = ?, department_id = ?, " +
+            "job_title = ?, gender = ?, date_of_birth = ? WHERE employee_id = ?";
+    private static final String DELETE_QUERY = "DELETE FROM employee WHERE employee_id = ?";
+    private static final String READ_ALL_QUERY = "SELECT * FROM employee";
+
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -24,12 +32,9 @@ public class EmployeeDao implements IEmployeeDao {
     }
 
     public Long create(Employee employee) {
-        String query = "INSERT INTO employee (employee_id, first_name, last_name, department_id, job_title, gender, date_of_birth)" +
-                " VALUES (DEFAULT, ?, ?, ?, ?, ?, ?) RETURNING employee_id";
-
         Long employee_id;
         try {
-            employee_id = jdbcTemplate.queryForObject(query,
+            employee_id = jdbcTemplate.queryForObject(CREATE_QUERY,
                     new Object[]{employee.getFirstName(),
                             employee.getLastName(), employee.getDepartmentId(), employee.getJobTitle(),
                             employee.getGender().name(), employee.getDateOfBirth()},
@@ -41,12 +46,9 @@ public class EmployeeDao implements IEmployeeDao {
     }
 
     public Employee read(Long pk) {
-        String query = "SELECT * FROM employee WHERE employee_id = ?";
-
         Employee employee;
         try {
-            employee = jdbcTemplate.queryForObject(
-                    query, new Object[]{pk}, new EmployeeMapper());
+            employee = jdbcTemplate.queryForObject(READ_QUERY, new Object[]{pk}, new EmployeeMapper());
         } catch (EmptyResultDataAccessException e) {
             employee = null;
         }
@@ -54,12 +56,9 @@ public class EmployeeDao implements IEmployeeDao {
     }
 
     public boolean update(Employee employee) {
-        String query = "UPDATE employee SET first_name = ?, last_name = ?, department_id = ?, " +
-                "job_title = ?, gender = ?, date_of_birth = ? WHERE employee_id = ?";
-
         int answer;
         try {
-        answer = jdbcTemplate.update(query, employee.getFirstName(),
+        answer = jdbcTemplate.update(UPDATE_QUERY, employee.getFirstName(),
                 employee.getLastName(), employee.getDepartmentId(), employee.getJobTitle(),
                 employee.getGender().name(), employee.getDateOfBirth(), employee.getEmployeeId());
         } catch (DataAccessException e) {
@@ -68,15 +67,11 @@ public class EmployeeDao implements IEmployeeDao {
         return answer == 1;
     }
 
-    public boolean delete(Long pk) {
-        String query = "DELETE FROM employee WHERE employee_id = ?";
-
-        return jdbcTemplate.update(query, pk) == 1;
+    public int delete(Long pk) {
+        return jdbcTemplate.update(DELETE_QUERY, pk);
     }
 
     public Collection<Employee> readAll() {
-        String query = "SELECT * FROM employee";
-
-        return jdbcTemplate.query(query, new EmployeeMapper());
+        return jdbcTemplate.query(READ_ALL_QUERY, new EmployeeMapper());
     }
 }

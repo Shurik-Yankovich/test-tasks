@@ -30,7 +30,7 @@ public class EmployeeService implements IEmployeeService {
         return employeeDao.update(employee);
     }
 
-    public boolean delete(Long pk) {
+    public int delete(Long pk) {
         return employeeDao.delete(pk);
     }
 

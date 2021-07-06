@@ -95,9 +95,9 @@ public class EmployeeServiceTest {
     public void deleteEmployee_whenEmployeeIdIsNotCorrect_thenGetTrue() {
         Long employeeId = 1L;
 
-        Mockito.doReturn(true).when(employeeDao).delete(employeeId);
+        Mockito.doReturn(1).when(employeeDao).delete(employeeId);
 
-        assertTrue(employeeService.delete(employeeId));
+        assertEquals(employeeService.delete(employeeId), 1);
     }
 
     @Test

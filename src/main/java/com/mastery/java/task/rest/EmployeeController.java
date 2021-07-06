@@ -30,17 +30,16 @@ public class EmployeeController {
     }
 
     @PutMapping(value = "/employee")
-    public ResponseEntity<?> update(@RequestBody Employee employee) {
+    public ResponseEntity<String> update(@RequestBody Employee employee) {
         return employeeService.update(employee) ?
                 new ResponseEntity<>("Updating of the employee was successful", HttpStatus.OK) :
                 new ResponseEntity<>("This employee does not exist", HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/employee/{id}")
-    public ResponseEntity<?> delete(@PathVariable(name = "id") Long pk) {
-        return employeeService.delete(pk) ?
-                new ResponseEntity<>("Removal of the employee was successful", HttpStatus.OK) :
-                new ResponseEntity<>("This employee ID does not exist", HttpStatus.BAD_GATEWAY);
+    public ResponseEntity<String> delete(@PathVariable(name = "id") Long pk) {
+        int deletedRow = employeeService.delete(pk);
+        return new ResponseEntity<>(String.format("Deleted records is %s", deletedRow), HttpStatus.OK);
     }
 
     @GetMapping(value = "/employee")

@@ -9,6 +9,6 @@ public interface IEmployeeDao {
     Long create(Employee employee);
     Employee read(Long pk);
     boolean update(Employee employee);
-    boolean delete(Long pk);
+    int delete(Long pk);
     Collection<Employee> readAll();
 }
