@@ -7,13 +7,10 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import com.mastery.java.task.dto.Employee;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.sql.DataSource;
 import java.util.Collection;
 
 @Repository
-@Transactional
 public class EmployeeDao implements IEmployeeDao {
 
     private static final String CREATE_QUERY = "INSERT INTO employee (employee_id, first_name, last_name, department_id, job_title, gender, date_of_birth)" +
@@ -27,8 +24,8 @@ public class EmployeeDao implements IEmployeeDao {
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public EmployeeDao(DataSource dataSource) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
+    public EmployeeDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public Long create(Employee employee) {
@@ -45,30 +42,30 @@ public class EmployeeDao implements IEmployeeDao {
         return employee_id;
     }
 
-    public Employee read(Long pk) {
+    public Employee read(Long id) {
         Employee employee;
         try {
-            employee = jdbcTemplate.queryForObject(READ_QUERY, new Object[]{pk}, new EmployeeMapper());
+            employee = jdbcTemplate.queryForObject(READ_QUERY, new Object[]{id}, new EmployeeMapper());
         } catch (EmptyResultDataAccessException e) {
             employee = null;
         }
         return employee;
     }
 
-    public boolean update(Employee employee) {
+    public boolean update(Long id, Employee employee) {
         int answer;
         try {
         answer = jdbcTemplate.update(UPDATE_QUERY, employee.getFirstName(),
                 employee.getLastName(), employee.getDepartmentId(), employee.getJobTitle(),
-                employee.getGender().name(), employee.getDateOfBirth(), employee.getEmployeeId());
+                employee.getGender().name(), employee.getDateOfBirth(), id);
         } catch (DataAccessException e) {
             answer = 0;
         }
         return answer == 1;
     }
 
-    public int delete(Long pk) {
-        return jdbcTemplate.update(DELETE_QUERY, pk);
+    public int delete(Long id) {
+        return jdbcTemplate.update(DELETE_QUERY, id);
     }
 
     public Collection<Employee> readAll() {

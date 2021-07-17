@@ -85,10 +85,11 @@ public class EmployeeServiceTest {
     public void updateEmployee_whenEmployeeExistAndHaveCorrectDate_thenGetTrue() {
         Employee employee = new Employee(1, "Test", "Test",
                 2, "Test", Gender.MALE, LocalDate.of(1990, 1, 1));
+        Long employeeID = 1L;
 
-        Mockito.doReturn(true).when(employeeDao).update(employee);
+        Mockito.doReturn(true).when(employeeDao).update(employeeID, employee);
 
-        assertTrue(employeeService.update(employee));
+        assertTrue(employeeService.update(employeeID, employee));
     }
 
     @Test

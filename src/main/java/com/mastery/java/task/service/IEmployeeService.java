@@ -6,8 +6,8 @@ import java.util.Collection;
 
 public interface IEmployeeService {
     Employee create(Employee employee);
-    Employee read(Long pk);
-    boolean update(Employee employee);
-    int delete(Long pk);
+    Employee read(Long id);
+    boolean update(Long id, Employee employee);
+    int delete(Long id);
     Collection<Employee> readAll();
 }

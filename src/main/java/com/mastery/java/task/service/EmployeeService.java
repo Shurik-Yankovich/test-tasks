@@ -22,16 +22,16 @@ public class EmployeeService implements IEmployeeService {
         return employeeId != 0 ? employeeDao.read(employeeId) : null;
     }
 
-    public Employee read(Long pk) {
-        return employeeDao.read(pk);
+    public Employee read(Long id) {
+        return employeeDao.read(id);
     }
 
-    public boolean update(Employee employee) {
-        return employeeDao.update(employee);
+    public boolean update(Long id, Employee employee) {
+        return employeeDao.update(id, employee);
     }
 
-    public int delete(Long pk) {
-        return employeeDao.delete(pk);
+    public int delete(Long id) {
+        return employeeDao.delete(id);
     }
 
     public Collection<Employee> readAll() {
