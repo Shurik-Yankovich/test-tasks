@@ -1,15 +1,21 @@
 package com.mastery.java.task.dto;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
+@Entity
+@Table(name = "employee")
 public class Employee {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long employeeId;
     private String firstName;
     private String lastName;
     private long departmentId;
     private String jobTitle;
+    @Enumerated(EnumType.STRING)
     private Gender gender;
     private LocalDate dateOfBirth;
 
