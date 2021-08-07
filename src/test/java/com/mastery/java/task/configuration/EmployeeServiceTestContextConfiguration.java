@@ -1,7 +1,6 @@
 package com.mastery.java.task.configuration;
 
 import com.mastery.java.task.dao.EmployeeDao;
-import com.mastery.java.task.dao.IEmployeeDao;
 import com.mastery.java.task.service.EmployeeServiceImpl;
 import com.mastery.java.task.service.EmployeeService;
 import org.mockito.Mockito;

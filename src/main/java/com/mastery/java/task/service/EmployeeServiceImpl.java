@@ -24,7 +24,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     public Employee read(Long id) {
         return employeeDao.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Not found Tutorial with id = " + id));
+                () -> new ResourceNotFoundException("Not found Employee with id = " + id));
     }
 
     public Employee update(Employee employee) {

@@ -2,7 +2,6 @@ package com.mastery.java.task.service;
 
 import com.mastery.java.task.configuration.EmployeeServiceTestContextConfiguration;
 import com.mastery.java.task.dao.EmployeeDao;
-import com.mastery.java.task.dao.IEmployeeDao;
 import com.mastery.java.task.dto.Employee;
 import com.mastery.java.task.dto.Gender;
 import com.mastery.java.task.dto.exception.ResourceNotFoundException;
