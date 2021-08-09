@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @RestControllerAdvice
 public class ControllerExceptionHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    private static final Logger log = LoggerFactory.getLogger(ControllerExceptionHandler.class);
 
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)

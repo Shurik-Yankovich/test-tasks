@@ -15,7 +15,7 @@ import java.lang.invoke.MethodHandles;
 @RequestMapping(value = "/employee")
 public class EmployeeController {
 
-    private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    private static final Logger log = LoggerFactory.getLogger(EmployeeController.class);
 
     @Autowired
     private EmployeeService employeeService;
