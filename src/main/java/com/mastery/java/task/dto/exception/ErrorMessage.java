@@ -1,15 +1,15 @@
 package com.mastery.java.task.dto.exception;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class ErrorMessage {
 
-    private int statusCode;
-    private LocalDate timestamp;
-    private String message;
-    private String description;
+    private final int statusCode;
+    private final LocalDateTime timestamp;
+    private final String message;
+    private final String description;
 
-    public ErrorMessage(int statusCode, LocalDate timestamp, String message, String description) {
+    public ErrorMessage(int statusCode, LocalDateTime timestamp, String message, String description) {
         this.statusCode = statusCode;
         this.timestamp = timestamp;
         this.message = message;
@@ -20,7 +20,7 @@ public class ErrorMessage {
         return statusCode;
     }
 
-    public LocalDate getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 

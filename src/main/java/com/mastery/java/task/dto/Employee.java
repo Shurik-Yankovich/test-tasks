@@ -1,6 +1,10 @@
 package com.mastery.java.task.dto;
 
+import com.mastery.java.task.utils.valid.AdultAge;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -11,12 +15,17 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long employeeId;
+    @NotBlank
     private String firstName;
+    @NotBlank
     private String lastName;
+    @NotNull
     private long departmentId;
+    @NotBlank
     private String jobTitle;
     @Enumerated(EnumType.STRING)
     private Gender gender;
+    @AdultAge
     private LocalDate dateOfBirth;
 
     public Employee() {
