@@ -3,7 +3,6 @@ package com.mastery.java.task.rest;
 import com.mastery.java.task.dto.Employee;
 import com.mastery.java.task.service.EmployeeService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
-import java.lang.invoke.MethodHandles;
 
 @Validated
 @RestController
