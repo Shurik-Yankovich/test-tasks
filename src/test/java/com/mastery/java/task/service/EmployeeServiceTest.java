@@ -1,41 +1,34 @@
 package com.mastery.java.task.service;
 
-import com.mastery.java.task.configuration.EmployeeServiceTestContextConfiguration;
 import com.mastery.java.task.dao.EmployeeDao;
 import com.mastery.java.task.dto.Employee;
 import com.mastery.java.task.dto.Gender;
 import com.mastery.java.task.dto.exception.ResourceNotFoundException;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = EmployeeServiceTestContextConfiguration.class)
+@ExtendWith(MockitoExtension.class)
 public class EmployeeServiceTest {
 
-    @Autowired
+    @Mock
     private EmployeeDao employeeDao;
-    @Autowired
-    private EmployeeService employeeService;
+    @InjectMocks
+    private EmployeeServiceImpl employeeService;
 
-    private static Employee EXPECTED_EMPLOYEE;
-
-    @BeforeAll
-    public static void init() {
-        EXPECTED_EMPLOYEE = new Employee(1, "Test", "Test",
-                2, "Test", Gender.MALE, LocalDate.of(1990, 1, 1));
-    }
+    private static final Employee EXPECTED_EMPLOYEE = new Employee(1, "Test", "Test",
+            2, "Test", Gender.MALE, LocalDate.of(1990, 1, 1));
 
     @Test
     public void createEmployee_whenParametersAsNull_thenGetNull() {
@@ -79,8 +72,6 @@ public class EmployeeServiceTest {
 
         Mockito.doReturn(optionalEmployee).when(employeeDao).findById(employeeId);
 
-//        Employee actualEmployee = employeeService.read(employeeId);
-
         assertThrows(ResourceNotFoundException.class, () -> employeeService.read(employeeId));
     }
 
@@ -95,26 +86,19 @@ public class EmployeeServiceTest {
         assertEquals(EXPECTED_EMPLOYEE, actualEmployee);
     }
 
-//    @Test
-//    public void deleteEmployee_whenEmployeeIdIsNotCorrect_thenGetTrue() {
-//        Long employeeId = 1L;
-//
-//        Mockito.doNothing().when(employeeDao).delete(employeeId);
-//
-//        assertDoesNotThrow(employeeService.delete(employeeId));
-//    }
-
     @Test
     public void readAllEmployees_whenDataBaseNotEmpty_thenReturnCorrectEmployeesList() {
         List<Employee> expectedEmployeeList = new ArrayList<>();
         expectedEmployeeList.add(EXPECTED_EMPLOYEE);
 
-        List<Employee> actualEmployeeList = new ArrayList<>();
-        actualEmployeeList.add(new Employee(1, "Test", "Test",
+        List<Employee> employeeList = new ArrayList<>();
+        employeeList.add(new Employee(1, "Test", "Test",
                 2, "Test", Gender.MALE, LocalDate.of(1990, 1, 1)));
 
-        Mockito.doReturn(actualEmployeeList).when(employeeDao).findAll();
+        Mockito.doReturn(employeeList).when(employeeDao).findAll();
 
-        assertEquals(expectedEmployeeList, actualEmployeeList);
+        Collection<Employee> actualEmployeeCollection = employeeService.readAll();
+
+        assertEquals(expectedEmployeeList, actualEmployeeCollection);
     }
 }
